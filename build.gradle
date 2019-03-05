@@ -11,10 +11,6 @@ buildscript {
         jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
     }
-    
-    dependencies {
-        
-    }
 }
 
 plugins {
@@ -26,34 +22,39 @@ plugins {
 group 'com.appdirect.experimental'
 version '0.0.1-SNAPSHOT'
 
-subprojects {
-    group project.parent.group
-    version project.parent.version
 
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'net.ltgt.apt'
-    apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'net.ltgt.apt'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        jcenter()
-        maven { url "https://plugins.gradle.org/m2/" }
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudBom"
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
     }
+}
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudBom"
-            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-        }
-    }
+dependencies {
+    compileOnly "org.projectlombok:lombok:$lombokVer"
+    annotationProcessor "org.projectlombok:lombok:$lombokVer"
 
-    dependencies {
-        compileOnly "org.projectlombok:lombok:$lombokVer"
-        annotationProcessor "org.projectlombok:lombok:$lombokVer"
-    }
+    compile "org.springframework.boot:spring-boot-starter"
+
+    compile "org.simpleflatmapper:sfm-csv:$csvMapperVer"
+
+    compile "org.springframework.cloud:spring-cloud-gcp-starter"
+    compile "org.springframework.cloud:spring-cloud-gcp-storage"
+    compile "org.springframework.cloud:spring-cloud-gcp-pubsub"
 }
