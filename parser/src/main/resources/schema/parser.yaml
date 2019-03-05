@@ -1,0 +1,14 @@
+delimiter: ','
+metadata:
+  - index: 0
+    id: "event_id"
+  - index: 1
+    id: "event_date_time"
+  - index: 2
+    id: "user_id"
+  - index: 3
+    id: "product_id"
+  - index: 4
+    id: "quantity"
+  - index: 5
+    id: "unit_price"
