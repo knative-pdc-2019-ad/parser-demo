@@ -1,0 +1,6 @@
+rootProject.name = 'knative-pdc-2019'
+
+include 'domain'
+include 'parser'
+include 'resolver'
+

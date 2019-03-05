@@ -1,0 +1,28 @@
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+
+dependencies {
+    compile project(':domain')
+
+    compile "org.springframework.boot:spring-boot-starter"
+
+    compile "org.simpleflatmapper:sfm-csv:$csvMapperVer"
+    
+    compile "org.springframework.cloud:spring-cloud-gcp-starter"
+    compile "org.springframework.cloud:spring-cloud-gcp-storage"
+    compile "org.springframework.cloud:spring-cloud-gcp-pubsub"
+}
+
+apply plugin: 'org.springframework.boot'
+
+springBoot {
+    buildInfo {
+        properties {
+            additional = [
+                    'name'    : project.name,
+                    'version' : project.version,
+                    'time'    : OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            ]
+        }
+    }
+}
