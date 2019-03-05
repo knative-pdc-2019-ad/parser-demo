@@ -1,0 +1,59 @@
+buildscript {
+    ext {
+        lombokVer = '1.18.2'
+        springCloudBom = 'Greenwich.RELEASE'
+        csvMapperVer = '6.0.10'
+    }
+    
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    
+    dependencies {
+        
+    }
+}
+
+plugins {
+    id 'idea'
+    id "net.ltgt.apt" version "0.14"
+    id "org.springframework.boot" version "2.1.2.RELEASE" apply false
+}
+
+group 'com.appdirect.experimental'
+version '0.0.1-SNAPSHOT'
+
+subprojects {
+    group project.parent.group
+    version project.parent.version
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'net.ltgt.apt'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudBom"
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+
+    dependencies {
+        compileOnly "org.projectlombok:lombok:$lombokVer"
+        annotationProcessor "org.projectlombok:lombok:$lombokVer"
+    }
+}

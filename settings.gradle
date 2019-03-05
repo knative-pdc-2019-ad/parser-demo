@@ -1,6 +1,5 @@
-rootProject.name = 'knative-pdc-2019'
+rootProject.name = 'parser-demo'
 
 include 'domain'
 include 'parser'
-include 'resolver'
 
