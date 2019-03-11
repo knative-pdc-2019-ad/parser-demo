@@ -1,6 +1,7 @@
 buildscript {
     ext {
         lombokVer = '1.18.2'
+        gsonVer = '2.8.5'
     }
     
     repositories {
@@ -16,6 +17,7 @@ plugins {
     id 'idea'
     id "net.ltgt.apt" version "0.14"
     id "org.springframework.boot" version "2.1.2.RELEASE" apply false
+    id 'com.google.cloud.tools.jib' version '0.9.10'
 }
 
 group 'com.appdirect.experimental'
@@ -49,5 +51,6 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:$lombokVer"
 
     compile "org.springframework.boot:spring-boot-starter-web"
+    compile "com.google.code.gson:gson:$gsonVer"
     compile "org.yaml:snakeyaml"
 }

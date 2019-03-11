@@ -2,15 +2,16 @@ package com.appdirect.demo.functions.domain.bo;
 
 import java.util.Map;
 import java.util.function.Function;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
+@Builder
 public class SourceEvent {
 
   @NonNull
   private String referenceId;
-  private Long processingTimeMillis;
 
   @NonNull
   private String eventStr;
@@ -21,7 +22,6 @@ public class SourceEvent {
   public RawEvent mapToRawEvent(Function<String, Map<String, String>> splitter) {
     return RawEvent.builder()
         .referenceId(referenceId)
-        .processingTimeMillis(processingTimeMillis)
         .fields(splitter.apply(eventStr))
         .build();
   }

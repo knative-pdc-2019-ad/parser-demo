@@ -4,10 +4,12 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.toMap;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import com.appdirect.demo.functions.domain.bo.CloudEvent;
 import com.appdirect.demo.functions.domain.bo.CsvParserConfig;
 import com.appdirect.demo.functions.domain.bo.CsvParserConfig.Metadata;
 import com.appdirect.demo.functions.domain.bo.RawEvent;
 import com.appdirect.demo.functions.domain.bo.SourceEvent;
+import com.google.gson.internal.LinkedTreeMap;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
@@ -19,15 +21,16 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 @SpringBootApplication
-public class ParserFunction implements Function<SourceEvent, RawEvent> {
+public class ParserFunction implements Function<CloudEvent, RawEvent> {
 
   private static final Logger LOGGER = getLogger(MethodHandles.lookup().lookupClass());
 
   @Override
-  public RawEvent apply(SourceEvent srcEvent) {
+  public RawEvent apply(CloudEvent cEvent) {
 
-    LOGGER.info("Received: {}", srcEvent);
-    
+    LOGGER.info("Received: {}", cEvent);
+
+    SourceEvent srcEvent = sourceEvent(cEvent);
     CsvParserConfig config = parserConfig(srcEvent.getConfigId());
     return srcEvent.mapToRawEvent(parser(config));
   }
@@ -41,6 +44,16 @@ public class ParserFunction implements Function<SourceEvent, RawEvent> {
       return parserConfig.getMetadata().stream()
           .collect(toMap(Metadata::getId, meta -> tokens[meta.getIndex()]));
     };
+  }
+
+  private SourceEvent sourceEvent(CloudEvent cEvent) {
+    LinkedTreeMap<String, Object> rawEvent = cEvent.getData();
+
+    return SourceEvent.builder()
+        .referenceId((String) rawEvent.get("referenceId"))
+        .eventStr((String) rawEvent.get("eventStr"))
+        .configId((String) rawEvent.get("configId"))
+        .build();
   }
 
   private CsvParserConfig parserConfig(String configId) {

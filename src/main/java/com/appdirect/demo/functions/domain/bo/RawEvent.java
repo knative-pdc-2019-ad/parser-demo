@@ -12,8 +12,5 @@ public class RawEvent {
   @NonNull
   private String referenceId;
 
-  @NonNull
-  private Long processingTimeMillis;
-
   private Map<String, String> fields;
 }
