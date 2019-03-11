@@ -18,8 +18,4 @@ public class CsvParserConfig {
     private int index;
     private String id;
   }
-
-  public char delimiter() {
-    return delimiter.charAt(0);
-  }
 }

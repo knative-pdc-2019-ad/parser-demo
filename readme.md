@@ -8,4 +8,3 @@
 - serverless
 - riff
 - spring cloud function
-- gcp
