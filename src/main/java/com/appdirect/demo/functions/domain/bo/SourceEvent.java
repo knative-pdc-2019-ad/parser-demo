@@ -16,9 +16,6 @@ public class SourceEvent {
   @NonNull
   private String eventStr;
 
-  @NonNull
-  private String configId;
-
   public RawEvent mapToRawEvent(Function<String, Map<String, String>> splitter) {
     return RawEvent.builder()
         .referenceId(referenceId)

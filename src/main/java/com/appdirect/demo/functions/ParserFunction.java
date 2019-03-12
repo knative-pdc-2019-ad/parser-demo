@@ -1,6 +1,5 @@
 package com.appdirect.demo.functions;
 
-import static java.lang.String.format;
 import static java.util.stream.Collectors.toMap;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -17,22 +16,23 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 @SpringBootApplication
-public class ParserFunction implements Function<CloudEvent, RawEvent> {
+public class ParserFunction {
 
   private static final Logger LOGGER = getLogger(MethodHandles.lookup().lookupClass());
 
-  @Override
-  public RawEvent apply(CloudEvent cEvent) {
-
-    LOGGER.info("Received: {}", cEvent);
-
-    SourceEvent srcEvent = sourceEvent(cEvent);
-    CsvParserConfig config = parserConfig(srcEvent.getConfigId());
-    return srcEvent.mapToRawEvent(parser(config));
+  @Bean
+  public Function<CloudEvent, RawEvent> parse() {
+    return cEvent -> {
+      LOGGER.info("Received: {}", cEvent);
+      SourceEvent srcEvent = sourceEvent(cEvent);
+      CsvParserConfig config = parserConfig();
+      return srcEvent.mapToRawEvent(parser(config));
+    };
   }
 
   //......##### internal #####......//
@@ -52,13 +52,12 @@ public class ParserFunction implements Function<CloudEvent, RawEvent> {
     return SourceEvent.builder()
         .referenceId((String) rawEvent.get("referenceId"))
         .eventStr((String) rawEvent.get("eventStr"))
-        .configId((String) rawEvent.get("configId"))
         .build();
   }
 
-  private CsvParserConfig parserConfig(String configId) {
+  private CsvParserConfig parserConfig() {
     InputStream is = getClass().getClassLoader()
-        .getResourceAsStream(format("schema/%s.yaml", configId));
+        .getResourceAsStream("schema/parser.yaml");
     Yaml yaml = new Yaml(new Constructor(CsvParserConfig.class));
     return yaml.load(is);
   }

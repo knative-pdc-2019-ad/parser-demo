@@ -9,7 +9,7 @@ spec:
       revisionTemplate:
         spec:
           container:
-            image: skylab00/parser:v01
+            image: skylab00/parser:v05
           timeoutSeconds: 600
 
 ---
@@ -22,7 +22,7 @@ spec:
   channel:
     apiVersion: eventing.knative.dev/v1alpha1
     kind: Channel
-    name: source
+    name: records
   subscriber:
     ref:
       apiVersion: serving.knative.dev/v1alpha1
@@ -30,6 +30,6 @@ spec:
       name: parser
   reply:
     channel:
-    apiVersion: eventing.knative.dev/v1alpha1
-    kind: Channel
-    name: parsed
+      apiVersion: eventing.knative.dev/v1alpha1
+      kind: Channel
+      name: parsed
