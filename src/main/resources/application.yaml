@@ -1,0 +1,4 @@
+spring:
+  cloud:
+    gcp:
+      project-id: knative-broker

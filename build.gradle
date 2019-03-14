@@ -22,7 +22,7 @@ plugins {
 }
 
 group 'com.appdirect.experimental'
-version '0.0.1'
+version '0.0.3'
 
 
 apply plugin: 'java'
@@ -60,7 +60,7 @@ dependencies {
 
 jib {
     to {
-        image = "gcr.io/pdc-19/parser:${project.version}"
+        image = "gcr.io/knative-broker/parser:${project.version}"
         credHelper = 'gcr'
     }
 }
