@@ -22,7 +22,7 @@ plugins {
 }
 
 group 'com.appdirect.experimental'
-version '0.0.1-SNAPSHOT'
+version '0.0.1'
 
 
 apply plugin: 'java'
@@ -57,3 +57,11 @@ dependencies {
     compile "com.google.code.gson:gson:$gsonVer"
     compile "org.yaml:snakeyaml"
 }
+
+jib {
+    to {
+        image = "gcr.io/pdc-19/parser:${project.version}"
+        credHelper = 'gcr'
+    }
+}
+
