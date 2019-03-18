@@ -31,6 +31,7 @@ public class ParserFunction {
       LOGGER.info("Received: {}", cEvent);
       SourceEvent srcEvent = sourceEvent(cEvent);
       CsvParserConfig config = parserConfig();
+
       return srcEvent.mapToRawEvent(parser(config));
     };
   }
