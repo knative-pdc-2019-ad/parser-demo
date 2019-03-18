@@ -3,6 +3,8 @@ buildscript {
         lombokVer = '1.18.2'
         gsonVer = '2.8.5'
         springCloudBom = 'Greenwich.RELEASE'
+
+        gcpProjectId = 'my-gcp-project'
     }
     
     repositories {
@@ -60,7 +62,7 @@ dependencies {
 
 jib {
     to {
-        image = "gcr.io/knative-broker/parser:${project.version}"
+        image = "gcr.io/${gcpProjectId}/parser:${project.version}"
         credHelper = 'gcr'
     }
 }
